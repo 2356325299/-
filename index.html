@@ -1,40 +1,113 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <title>我的图片展示</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f9f9f9;
-            text-align: center;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .gallery img {
-            width: 250px;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        .gallery img:hover {
-            transform: scale(1.05);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>我的图片展示</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* 大图弹窗 */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+
+    .lightbox img {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 80%;
+    }
+
+    .lightbox span {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <h1>欢迎来看我的图片展示</h1>
-    <div class="gallery">
-        <img src="images/pic1.jpg" alt="图片1">
-        <img src="images/pic2.jpg" alt="图片2">
-        <img src="images/pic3.jpg" alt="图片3">
-        <!-- 继续添加图片 -->
-    </div>
+  <h1>欢迎来到我的图片展示</h1>
+
+  <div class="gallery" id="gallery"></div>
+
+  <!-- 大图预览 -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <span onclick="closeLightbox()">&times;</span>
+    <img id="lightbox-img">
+  </div>
+
+  <script>
+    // ✅ 只需要在这里写图片文件名即可
+    const images = [
+      "pic1.jpg",
+      "pic2.jpg",
+      "pic3.jpg",
+      "pic4.jpg",
+      "pic5.jpg"
+    ];
+
+    const gallery = document.getElementById("gallery");
+
+    images.forEach(img => {
+      const imageElement = document.createElement("img");
+      imageElement.src = "images/" + img;
+      imageElement.alt = img;
+      imageElement.onclick = () => openLightbox(imageElement);
+      gallery.appendChild(imageElement);
+    });
+
+    function openLightbox(img) {
+      document.getElementById("lightbox").style.display = "block";
+      document.getElementById("lightbox-img").src = img.src;
+    }
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+  </script>
 </body>
 </html>
